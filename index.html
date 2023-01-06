@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .blocks{
+            border: 2px black solid;
+            width: 100%;
+            display:flex;
+            flex-wrap: wrap;
+        }
+        .block{
+            height: 30px;
+            width: 30px;
+            background-color: grey;
+            margin: 2px;
+            transition: 0.1s;
+        }
+        .block:hover{
+            border-radius: 50%;
+            background-color: indianred;
+        }
+        .block5{
+            height: 50px;
+            width: 50px;
+            background-color:bisque;
+            margin: var(--margin-top);
+        }
+        .block2{
+            height: 250px;
+            width: 250px;
+            background-repeat: no-repeat;
+        }
+        .photo{
+            display: inline-block;
+        }
+    </style>
+    <title>Practice</title>
+</head>
+<body>
+    <div id="app">
+        <div class="exercises">
+            <h1>IF ELSE</h1>
+            <div class="exercise">
+                <!-- //TODO Завдання 1 (1 бал) -->
+                <h2>Завдання 1</h2>
+                <input type="text" :value="flat" @input="flat=$event.target.value" placeholder="Квартира">
+                <button @click="calcEntrance">Розрахувати під'їзд</button>
+                <h3>{{home}}</h3>
+            </div>
+            <div class="exercise">
+                <!-- //TODO Завдання 2 (1 бал) -->
+                <h2>Завдання 2</h2>
+                <input type="text" :value="login" @input="login=$event.target.value" placeholder="Логін">
+                <input type="text" :value="password" @input="password=$event.target.value" placeholder="Пароль">
+                <button @click="logInSystem">Війти</button>
+                <h3>{{LogIn}}</h3>
+            </div>
+            <div class="exercise">
+                <!-- //TODO Завдання 3 (1 бал) -->
+                <h2>Завдання 3</h2>
+                <input type="text" :value="year" @input="year=$event.target.value" placeholder="Рік народження">
+                <button @click="checkYear">Війти</button>
+                <h3>{{LogIn2}}</h3>
+            </div>
+            <div class="exercise">
+                <!-- //TODO Завдання 4 (1 бал) -->
+                <h2>Завдання 4</h2>
+                <input type="text" :value="experience" @input="experience=$event.target.value" placeholder="Стаж">
+                <button @click="checkPremium">Розрахувати</button>
+                <h3>{{premium}}</h3>
+            </div>
+        </div>
+        <div class="exercises">
+            <h1>ФУНКЦІЇ</h1>
+            <div class="exercise">
+                <!-- //TODO Завдання 5 (1 бал) -->
+                <h2>Завдання 5</h2> 
+                <input type="text" :value="number" @input="number=$event.target.value" placeholder="Число">
+                <input type="text" :value="degree" @input="degree=$event.target.value" placeholder="Степінь">
+                <button @click="calcPow">Розрахувати число в степені</button>
+            </div>
+            <div class="exercise"> 
+                <!-- //TODO Завдання 7 (1 бал) -->
+                <h2>Завдання 7</h2>
+                <input type="text" :value="age" @input="age=$event.target.value" placeholder="Вік">
+                <button @click="checkAge">Перевірити вік</button>
+                <h3>{{checkedAge}}</h3>
+            </div>
+            <div class="exercise"> 
+                <!-- //TODO Завдання 11 (3 бал) -->
+                <h2>Завдання 11</h2>
+                <input type="text" :value="numb" @input="numb=$event.target.value" placeholder="Число">
+                <button @click="checkNumb">Вгадати число</button>
+                <h3>{{checkedNumb}}</h3>
+            </div>
+        </div>
+        <div class="exercises">
+            <h1>НА ПОДІЇ МИШІ І КЛАВІАТУРИ</h1>
+            <div class="exercise">
+                <!-- //TODO Завдання 3 (2 бал) -->
+                <h2>Завдання 3</h2> 
+                <button @click="createBlocks">Створити квадрати</button>
+                <div class="blocks">
+                    <div v-for="block in blocks" :key="block.idB">
+                        <div id="block.idB" class="block"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="exercise">
+                <!-- //TODO Завдання 2 (2 бал) -->
+                <h2>Завдання 2</h2> 
+                <div class="block2" v-on:dblclick="counter += 1, changePhoto()" :style="style2"></div>
+            </div>
+            <div class="exercise">
+                <!-- //TODO Завдання 5 (2 бал) -->
+                <h2>Завдання 5</h2> 
+                <div class="block5" @click="changePosition" :style="style"></div>
+            </div>
+            <div class="exercise">
+                <!-- //TODO Завдання 8 (2 бал) -->
+                <h2>Завдання 8</h2> 
+                <div class="photo" @click="changeWidth">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/A_sunflower.jpg" alt="" :width="widthPhoto+'px'" :height="widthPhoto+'px'">
+                </div>
+            </div>
+            <div class="exercise">
+                <!-- //TODO Завдання 16 (2 бал) -->
+                <h2>Завдання 16</h2> 
+                <div class="photo" @mouseover="changePhoto1" @mouseout="changePhoto2">
+                    <img :src="photo" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        function getRandomInt(max) {
+                    return Math.floor(Math.random() * max);
+                }
+        var app = new Vue({
+            el:'#app',
+            data:{
+                home:'',
+                flat:'',
+                login:'',
+                password:'',
+                LogIn:'',
+                logDate:[
+                    {log:'toma',pass:'123'},
+                    {log:'petya',pass:'777'},
+                    {log:'olya',pass:'456'},
+                ],
+                year:'',
+                LogIn2:'',
+                experience:'',
+                premium:'',
+                number:'',
+                degree:'',
+                pow:'',
+                age:'',
+                checkedAge:'',
+                numb:'',
+                checkedNumb:'',
+                hiddenNumb:'',
+                try:0,
+                widthPhoto:500,
+                blocks:[
+                    {idB:0},
+                ],
+                style:"margin-top:0px;",
+                style2:'background-image: url("https://emojis.wiki/emoji-pics/google/file-folder-google.png")',
+                photo:'https://emojis.wiki/emoji-pics/google/file-folder-google.png',
+                photoOpen:'https://emojis.wiki/emoji-pics/google/open-file-folder-google.png',
+                positionBlock:0,
+                counter:0,
+                },
+
+            methods:{
+                calcEntrance(){
+                    if(this.flat<=20 && this.flat>=1){
+                        this.home='1'
+                    } else if (this.flat<=48 && this.flat>=21){
+                        this.home='2'
+                    } else if (this.flat<=90 && this.flat>=49){
+                        this.home='3'
+                    } else {
+                        this.home='Квартира не знайдена'
+                    }
+                },
+                logInSystem(){
+                    for(const element of this.logDate){
+                        if(element.log==this.login && element.pass==this.password){
+                            this.LogIn='Ласкаво просимо'
+                            break;
+                        } else this.LogIn='Помилка входу'
+                    }
+                    this.login='',
+                    this.password=''
+                },
+                checkYear(){
+                    let date = new Date();
+                    if(date.getFullYear()-this.year>=16 && this.year!=''){
+                        this.LogIn2='Ласкаво просимо'
+                    } else{
+                        this.LogIn2='Помилка входу'
+                    }
+                },
+                checkPremium(){
+                    if(this.experience>=20){
+                        this.premium='25%'
+                    } else if (this.experience<20 && this.experience>=10){
+                        this.premium='20%'
+                    } else if (this.experience<10 && this.experience>=3){
+                        this.premium='10%'
+                    } else if (this.experience<3 && this.experience>=0){
+                        this.premium='0%'
+                    } else {
+                        this.premium='Некорректно введен стаж'
+                    }
+                },
+                calcPow(){
+                    alert(Math.pow(this.number,this.degree))
+                },
+                checkAge(){
+                    if(this.age>=16){
+                        this.checkedAge='Ласкаво просимо'
+                    } else this.checkedAge='Ви ще молоді'
+                },
+                checkNumb(){
+                    if(this.numb>=0 && this.numb<=10){
+                       if(this.hiddenNumb==''){
+                        this.hiddenNumb=getRandomInt(11);
+                        console.log(this.hiddenNumb)
+                        }
+                        this.try++
+                        if(this.numb==this.hiddenNumb){
+                            this.checkedNumb='Вітаю ви вийграли з '+this.try+'-ї спроби. Загадане число було '+this.hiddenNumb+'. Гра почнеться заново',
+                            this.hiddenNumb='',
+                            this.try=0
+                        } else if (this.numb<=this.hiddenNumb){
+                            this.checkedNumb='Загадане число більше. Кількість спроб: '+this.try
+                        } else if (this.numb>=this.hiddenNumb){
+                            this.checkedNumb='Загадане число менше. Кількість спроб: '+this.try
+                        }
+                        this.numb='' 
+                        if(this.try==3){
+                            this.checkedNumb='Ви програли, загадане число було '+this.hiddenNumb+'. Гра почнеться заново'
+                            this.hiddenNumb='',
+                            this.try=0
+                        }  
+                    } else{
+                        this.checkedNumb="Некорректно введено число, будь ласка, введіть число від 0 до 10"
+                        this.numb=''
+                    }
+                    
+                },
+                createBlocks(){
+                    for(var i=0;i<400;i++){
+                        this.blocks[i]={idB: i}
+                    }
+                    console.log(this.blocks)
+                },
+                changeWidth(){
+                    this.widthPhoto=this.widthPhoto -10
+                },
+                changePosition(){
+                    this.positionBlock+=100
+                    this.style="margin-top:"+this.positionBlock+"px;"
+                    console.log(this.style)
+                },
+                changePhoto(){
+                    console.log(true)
+                    if(this.style2=='background-image: url("https://emojis.wiki/emoji-pics/google/file-folder-google.png")'){
+                        this.style2='background-image: url("https://emojis.wiki/emoji-pics/google/open-file-folder-google.png")'
+                    } else if(this.style2=='background-image: url("https://emojis.wiki/emoji-pics/google/open-file-folder-google.png")'){
+                        this.style2='background-image: url("https://emojis.wiki/emoji-pics/google/file-folder-google.png")'
+                    }
+
+                },
+                changePhoto1(){
+                    this.photo="https://emojis.wiki/emoji-pics/google/open-file-folder-google.png"
+                },
+                changePhoto2(){
+                    this.photo="https://emojis.wiki/emoji-pics/google/file-folder-google.png"
+                },
+            }},
+        )
+        
+    </script>
+</body>
+</html>
