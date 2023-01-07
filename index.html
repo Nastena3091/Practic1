@@ -52,7 +52,23 @@
             color: black;
         }
         .exercise{
-            border: 1px black solid;
+        }
+        table{
+            border: 2px indianred solid;
+            border-collapse: collapse;
+            background-color: blanchedalmond;
+        }
+        td{
+            border: 1px solid indianred;
+        }
+        thead{
+            font-weight: 600;
+        }
+        tbody tr:nth-child(odd) {
+            background-color:azure;
+        }
+        footer{
+            height: 100px;
         }
     </style>
     <title>Practice</title>
@@ -186,6 +202,39 @@
                 </div>
             </center>
         </div>
+        <div class="day">
+            <h1>DAY 3</h1>
+            <div class="exercises">
+                <div class="exercise">
+                    <center>
+                        <pre></pre>
+                        <input type="text" @input="searchStudent" @mouseout="searchStudent" v-model="search" placeholder="Пошук">
+                        <pre></pre>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>ПІБ</td>
+                                    <td>Група</td>
+                                    <td>Рік народження</td>
+                                    <td>Наявність роботи</td>
+                                    <td>Дії</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="st in searchedStudents">
+                                    <td>{{st.name}}</td>
+                                    <td>{{st.group}}</td>
+                                    <td>{{st.year}}</td>
+                                    <td><input type="checkbox" v-if="st.work==true" checked><input type="checkbox" v-else></td>
+                                    <td><a @click="deleteStudent(st.id)">Видалити</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </center>
+                </div>
+            </div>
+        </div>
+        <footer></footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
@@ -207,6 +256,13 @@
                             "source": ""
                         }
                     ]
+        var studentsArray=[
+            {'id':'1','name':'Тимофеєва Анастасія Денисівна','group':'1','year':'2004','work':true},
+            {'id':'2','name':'Клещов Артем Володимирович','group':'2','year':'2004','work':false},
+            {'id':'3','name':'Стичук Анастасія Валеріївна','group':'1','year':'2003','work':false},
+            {'id':'4','name':'Тахан Нансі Хасан','group':'1','year':'2005','work':true},
+            {'id':'5','name':'Будейрі Карим Іяд','group':'2','year':'2003','work':false}
+        ]
         function getRandomInt(max) {
                     return Math.floor(Math.random() * max);
                 }
@@ -249,6 +305,9 @@
                 quotes: quotesArray,
                 isAutor:'',
                 sortedQuotes:'',
+                students:studentsArray,
+                search:'',
+                searchedStudents:studentsArray,
                 },
             methods:{
                 calcEntrance(){
@@ -360,7 +419,20 @@
                 },
                 sortSource(){
                     this.sortedQuotes=[...this.quotes].sort((a, b) => (a.source > b.source) ? 1 : -1)
-                }
+                },
+                deleteStudent(a){
+                    this.searchedStudents=this.searchedStudents.filter(element=>{
+                        return element.id!=a
+                    })
+                    this.students=this.students.filter(element=>{
+                        return element.id!=a
+                    })
+                },
+                searchStudent(){
+                    this.searchedStudents=this.students.filter(element=>{
+                        return element.name.includes(this.search)==true
+                    })
+                },
             },
             computed:{
                 filteredQuotes(){
