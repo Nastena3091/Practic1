@@ -57,8 +57,15 @@
             border: 2px indianred solid;
             border-collapse: collapse;
             background-color: blanchedalmond;
+            width: 100%;
+        }
+        table input{
+            width: 80%;
+
         }
         td{
+            text-align: center;
+            padding: 10px;
             border: 1px solid indianred;
         }
         thead{
@@ -203,12 +210,22 @@
             </center>
         </div>
         <div class="day">
-            <h1>DAY 3</h1>
+            <h1>DAY 3-4</h1>
             <div class="exercises">
                 <div class="exercise">
                     <center>
+                        <input type="text" placeholder="ПІБ" v-model="nameStud">
+                        <select id="select" v-model="groupStud">
+                            <option value="default" selected disabled>Група</option>
+                            <option value="1">Група 1</option>
+                            <option value="2">Група 2</option>
+                        </select>
+                        <input type="text" placeholder="Рік народження" v-model="yearStud">
+                        <input type="checkbox" name="" id="" v-model="workStud">Наявність роботи
                         <pre></pre>
-                        <input type="text" @input="searchStudent" @mouseout="searchStudent" v-model="search" placeholder="Пошук">
+                        <button @click="addStudent">Додати студента</button>
+                        <pre></pre>
+                        <input type="text" @input="searchStudent" v-model="search" placeholder="Пошук">
                         <pre></pre>
                         <table>
                             <thead>
@@ -217,20 +234,39 @@
                                     <td>Група</td>
                                     <td>Рік народження</td>
                                     <td>Наявність роботи</td>
-                                    <td>Дії</td>
+                                    <td colspan="2">Дії</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="st in searchedStudents">
-                                    <td>{{st.name}}</td>
-                                    <td>{{st.group}}</td>
-                                    <td>{{st.year}}</td>
-                                    <td><input type="checkbox" v-if="st.work==true" checked><input type="checkbox" v-else></td>
+                                    <td><input type="text" :value="st.name" @input="st.name=$event.target.value"></td>
+                                    <td>
+                                        <select id="select" v-model="st.group">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" :value="st.year" @input="st.year=$event.target.value"></td>
+                                    <td><input type="checkbox" v-model="st.work"></td>
                                     <td><a @click="deleteStudent(st.id)">Видалити</a></td>
+                                    <td><a @click="updateStudent(st)">Змінити</a></td>
                                 </tr>
                             </tbody>
                         </table>
                     </center>
+                </div>
+                <div class="exercise">
+                    <span style="font-size:25px;">EnterAge:</span>
+                    <input v-model.number="age4" type="number">{{typeof age4}}
+                    <br>
+                    <span style="font-size:25px;">EnterMessage:</span>
+                    <input v-model.lazy="msg">{{this.msg}}
+                    <br>
+                    <span style="font-size:25px;">EnterMessage : </span>
+                    <input v-model.trim="message">{{this.message}}
+                </div>
+                <div class="exercise">
+                    <div :style="styleobj" @mouseover="changebgcolor" @mouseout="originalcolor"></div>
                 </div>
             </div>
         </div>
@@ -269,6 +305,9 @@
         var app = new Vue({
             el:'#app',
             data:{
+                age4:'',
+                msg:'',
+                message:'',
                 home:'',
                 flat:'',
                 login:'',
@@ -308,6 +347,19 @@
                 students:studentsArray,
                 search:'',
                 searchedStudents:studentsArray,
+                nameStud:'',
+                groupStud:'',
+                yearStud:'',
+                workStud:false,
+                num1:100,
+                num2 :200,
+                total:'',
+                styleobj:{
+                    width:"100px",
+                    height:"100px",
+                    backgroundColor:"red"
+                },
+
                 },
             methods:{
                 calcEntrance(){
@@ -433,6 +485,32 @@
                         return element.name.includes(this.search)==true
                     })
                 },
+                addStudent(){
+                    this.students.push({'id':this.students.length+1,'name':this.nameStud,'group':this.groupStud,'year':this.yearStud,'work':this.workStud})
+                    console.log(this.students)
+                    this.nameStud='',
+                    this.groupStud='',
+                    this.yearStud='',
+                    this.workStud=false
+                },
+                // updateStudent(a){
+                //     this.students.forEach(element => {
+                //         if(a.id==element.id)
+                //         {
+                //             element.name=a.name,
+                //             element.group=a.group,
+                //             element.year=a.year,
+                //             element.work=a.work;
+                //         }
+                //     });
+                        
+                // },
+                changebgcolor(){
+                    this.styleobj.backgroundColor="green";
+                },
+                originalcolor(){
+                    this.styleobj.backgroundColor="red";
+                },
             },
             computed:{
                 filteredQuotes(){
@@ -441,7 +519,7 @@
                     })
                 }
                 },
-            },
+        },
         )
         
     </script>
